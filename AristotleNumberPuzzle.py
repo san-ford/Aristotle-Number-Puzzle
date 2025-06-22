@@ -1,19 +1,47 @@
 import time
+import matplotlib.pyplot as plt
+from matplotlib.patches import RegularPolygon
+import numpy as np
 
-# print solution
-def printit():
-    solutions[0] += 1
-    print("Solution " + str(solutions[0]) + ":")
-    print(f"{'        '}{pos[1] : ^8}{pos[2] : ^8}{pos[3] : ^8}")
-    print()
-    print()
-    print(f"{'    '}{pos[12] : ^8}{pos[13] : ^8}{pos[14] : ^8}{pos[4] : ^8}")
-    print()
-    print(f"{pos[11] : ^8}{pos[18] : ^8}{pos[19] : ^8}{pos[15] : ^8}{pos[5] : ^8}")
-    print()
-    print(f"{'    '}{pos[10] : ^8}{pos[17] : ^8}{pos[16] : ^8}{pos[6] : ^8}")
-    print()
-    print(f"{'        '}{pos[9] : ^8}{pos[8] : ^8}{pos[7] : ^8}")
+
+# plot solutions
+def make_plots(sol):
+    fig = plt.figure(figsize=(10, 10))
+    for i, p in enumerate(sol):
+        ax = plt.subplot(3, 4, i + 1)
+        plt.axis('off')
+        # coordinates with center block at origin
+        coord = [[-1, 2], [0, 2], [1, 2], [-1.5, 1], [-0.5, 1], [0.5, 1], [1.5, 1],
+                 [-2, 0], [-1, 0], [0, 0], [1, 0], [2, 0], [-1.5, -1], [-0.5, -1],
+                 [0.5, -1], [1.5, -1], [-1, -2], [0, -2], [1, -2]]
+        labels = [[str(p[1])], [str(p[2])], [str(p[3])], [str(p[12])], [str(p[13])],
+                  [str(p[14])], [str(p[4])], [str(p[11])], [str(p[18])], [str(p[19])],
+                  [str(p[15])], [str(p[5])], [str(p[10])], [str(p[17])], [str(p[16])],
+                  [str(p[6])], [str(p[9])], [str(p[8])], [str(p[7])]]
+
+        # horizontal cartesian coords
+        hcoord = [c[0] for c in coord]
+
+        # vertical cartesian coords
+        vcoord = [c[1] * np.cos(np.radians(30)) for c in coord]
+
+        ax.set_aspect('equal')
+
+        # add colored hexagons
+        for x, y, l in zip(hcoord, vcoord, labels):
+            hex = RegularPolygon((x, y), numVertices=6, radius=0.575,
+                                 orientation=np.radians(60),
+                                 facecolor='goldenrod', edgecolor='black')
+            ax.add_patch(hex)
+            # add text labels
+            ax.text(x, y, l[0], ha='center', va='center',
+                    color='saddlebrown', size=15)
+
+        # Also add scatter points in hexagon centres
+        ax.scatter(hcoord, vcoord, color='goldenrod')
+        plt.title('Solution {}'.format(i + 1))
+        plt.axis('off')
+    plt.show()
 
 
 # performs validity checks for a specified depth
@@ -77,8 +105,10 @@ def checks(d):
     elif d == 19:
         if pos[5] + pos[11] + pos[15] + pos[18] + pos[19] != 38:
             return False
+        # solution found
         else:
-            printit()
+            # add solution to list
+            solutions.append(pos.copy())
     return True
 
 
@@ -101,14 +131,17 @@ def solve(depth):
     pos.pop()
 
 
-"""
-    index = position, value = block number
-    the numbers of the positions are defined by the graph
-"""
+# keep list of positions and block numbers
+# index = position, value = block number
 pos = [0]
-solutions = [0]
+solutions = []
 
+# keep track off runtime
 start = time.time()
+# perform DFS and retrieve solutions
 solve(0)
+# plot solutions
+make_plots(solutions)
+# display runtime
 end = time.time()
-print(solutions[0], "solutions found in", end-start, "seconds.")
+print("12 solutions found in", end-start, "seconds.")
