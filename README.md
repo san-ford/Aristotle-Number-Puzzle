@@ -2,7 +2,8 @@
 
 The Aristotle Number Puzzle is an octogonal grid with 19 cells, where each cell must contain a unique integer 1 - 19. To solve the puzzle, one must find an arrangement such that each straight line of cells adds to 38. The following is an unsolved puzzle:
 
-<img width="526" alt="38sum_graph" src="https://github.com/san-ford/Aristotle-Number-Puzzle/assets/147275762/d41f3fef-9d23-4abc-8ff9-c4f291025d77">
+<img width="414" alt="Screenshot 2025-04-27 at 9 19 28 PM" src="https://github.com/user-attachments/assets/b2bc8622-1ff6-49e3-a508-d4adb943f276" />
+
 
 The numbers in this diagram represent the path taken in my approach to solve the problem. Specifically, the numbers represent the node depth in a depth-first search. My approach is as follows:
 
