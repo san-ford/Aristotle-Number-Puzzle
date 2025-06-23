@@ -1,16 +1,23 @@
 # Aristotle-Number-Puzzle
 
-The Aristotle Number Puzzle is an octogonal grid with 19 cells, where each cell must contain a unique integer 1 - 19. To solve the puzzle, one must find an arrangement such that each straight line of cells adds to 38. The following is an unsolved puzzle:
+The Aristotle Number Puzzle is an octogonal grid with 19 cells, where each cell must contain a unique integer 1 - 19. To solve the puzzle, one must find an arrangement such that each row and each diagonal (both directions) sums to 38. The puzzle is arranged as such:
 
-<img width="414" alt="Screenshot 2025-04-27 at 9 19 28 PM" src="https://github.com/user-attachments/assets/b2bc8622-1ff6-49e3-a508-d4adb943f276" />
+<img width="500" alt="Cell Path" src="https://github.com/san-ford/Aristotle-Number-Puzzle/blob/main/Cell_Path.png" />
 
+The cell numbers in this diagram represent the path taken in my approach to solve the problem. Specifically, the numbers represent the node depth in a depth-first search. My approach is as follows:
 
-The numbers in this diagram represent the path taken in my approach to solve the problem. Specifically, the numbers represent the node depth in a depth-first search. My approach is as follows:
+## Initial Approach: Brute Force
+This involves trying every combination until all rows and diagonals sum to 38. This approach runs in *O(n)*, which is very slow, since the number of possible combinations is 19 **!** ~ 1.2 x $10^{17}$.
 
-Approach:
-1. Set up a DFS algorithm to find each valid arrangement of numbers into the given positions. Begin with every possible configuration (19! possible configurations, or 1.2e17), then perform checks to limit the depth of branches.
+## Depth-First Search
+1. Set up a DFS algorithm to find all valid arrangements of numbers. Begin with every combination, then perform checks to limit the depth of branches.
 2. Create the list of checks and implement them for their corresponding depths.
-3. If all checks are passed at depth 19, print the configuration (12 solutions due to symmetry).
+3. If all checks are passed at depth 19, record the solution (12 solutions due to symmetry).
+4. Plot all solutions
+
+Running the code produces the following graph:
+
+<img width="1000" alt="Solutions" src="https://github.com/san-ford/Aristotle-Number-Puzzle/blob/main/Solutions.png" />
 
 To optimize the run time and avoiding evaluating 19! configurations, as many checks as possible should be performed as early as possible. This is why I chose a path wrapping around the perimeter of the octogon, to implement a check at least every three node depths. The checks are as follows:
 
